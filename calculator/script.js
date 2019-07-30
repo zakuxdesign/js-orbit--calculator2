@@ -21,6 +21,7 @@ keys.addEventListener("click", e => {
       } else {
         display.textContent = displayedNum + keyContent;
       }
+      calculator.dataset.previousKey = "number";
     }
 
     if (!action) {
@@ -43,10 +44,28 @@ keys.addEventListener("click", e => {
       //Storing first number
       calculator.dataset.firstValue = displayedNum;
       calculator.dataset.operator = action;
+
+      if (firstValue && operator && previousKeyType == "operator") {
+        display.textContent = calculate(firstValue, operator, secondValue);
+      }
+
+      key.classList.add("is-depressed");
+      calculator.dataset.previousKeyType = "operator";
+      calculator.dataset.firstValue = displayedNum;
+      calculator.dataset.operator = action;
     }
 
     if (action === "decimal") {
       display.textContent = displayedNum + keyContent;
+
+      //Checks to see if a demical exists and stops from adding another
+      if (displayedNum.includes(".")) {
+        display.textContent = displayedNum;
+      } else if (previousKeyType === "operator") {
+        display.textContent = "0.";
+      }
+
+      calculator.dataset.previousKey = "decimal";
     }
 
     if (action === "calculate") {
@@ -67,6 +86,8 @@ keys.addEventListener("click", e => {
           result = parseFloat(n1) / parseFloat(n2);
         }
 
+        calculator.dataset.previousKeyType = "calculate";
+
         return result;
       };
 
@@ -74,7 +95,11 @@ keys.addEventListener("click", e => {
     }
 
     if (action === "clear") {
-      console.log("AC key!");
+      calculator.dataset.previousKeyType = "clear";
+
+      calculator.dataset.firstValue = "0";
+      calculator.dataset.operator = undefined;
+      display.textContent = "0";
     }
   }
 });
