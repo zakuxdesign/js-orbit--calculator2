@@ -1,4 +1,4 @@
-# JS Orbit Calculator 2
+# JS Orbit Calculator
 
 
 https://github.com/zakuxdesign/js-orbit--calculator2.git
